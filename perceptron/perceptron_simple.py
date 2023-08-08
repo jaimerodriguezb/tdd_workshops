@@ -16,5 +16,12 @@ class TestPerceptron(unittest.TestCase):
        
         self.assertEqual(y1,1.4)
 
+    def test_init_perceptron(self):
+        inputs = 2
+
+        p = Perceptron(inputs)
+
+        self.assertTrue(type(p) is Perceptron)
+
 
 unittest.main(__name__)
