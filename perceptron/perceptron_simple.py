@@ -7,6 +7,10 @@ def calcular_entrada(x,w):
 class Perceptron:
     def __init__(self, inputs):
         self.inputs = inputs
+        self.x = [0 for i in range(self.inputs)]
+        self.w = self.x
+        self.b = 0
+        self.output = 0
 
 
 class TestPerceptron(unittest.TestCase):
