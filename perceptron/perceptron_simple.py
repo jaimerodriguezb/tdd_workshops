@@ -3,7 +3,11 @@ import numpy as np
 
 def calcular_entrada(x,w):
     return np.dot(x,w)
-   
+
+class Perceptron:
+    def __init__(self, inputs):
+        self.inputs = inputs
+
 
 class TestPerceptron(unittest.TestCase):
    
