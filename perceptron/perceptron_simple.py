@@ -11,7 +11,17 @@ class Perceptron:
         self.w = self.x
         self.b = 0
         self.output = 0
+    
+    def update(self, x=None, w=None, b=None):
+        if x and len(x) == self.inputs:
+            self.x = x
+        if w and len(w) == self.inputs:
+            self.w = w
+        if b:
+            self.b = b
 
+    def calculate(self):
+        return 1 if (np.dot(self.x, self.w) + self.b) > 0.5 else 0
 
 class TestPerceptron(unittest.TestCase):
    
@@ -36,7 +46,7 @@ class TestPerceptron(unittest.TestCase):
         
         p = Perceptron(inputs)
         p.update(x=[1,2,3], w=[0.1,0.2,0.3], b=0)
-        output = p.calcuar()
+        output = p.calculate()
 
         self.assertTrue(type(p) is Perceptron)
 
