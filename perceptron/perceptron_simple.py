@@ -41,15 +41,24 @@ class TestPerceptron(unittest.TestCase):
 
         self.assertTrue(type(p) is Perceptron)
 
-    def test_calcular_perceptron(self):
+    def test_calcular_perceptron_outup_1(self):
         inputs = 2
         
         p = Perceptron(inputs)
-        p.update(x=[1,2,3], w=[0.1,0.2,0.3], b=0)
+        p.update(x=[1,2], w=[0.1,0.2], b=0.3)
         output = p.calculate()
 
-        self.assertTrue(type(p) is Perceptron)
+        self.assertEqual(output, 1)
 
+
+    def test_calcular_perceptron_outup_0(self):
+        inputs = 2
+        
+        p = Perceptron(inputs)
+        p.update(x=[1,1.5], w=[0.1,0.1], b=0.1)
+        output = p.calculate()
+
+        self.assertEqual(output, 0)
 
 
 
