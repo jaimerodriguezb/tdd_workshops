@@ -23,6 +23,14 @@ class Perceptron:
     def calculate(self):
         return 1 if (np.dot(self.x, self.w) + self.b) > 0.5 else 0
 
+class Compuertas:
+
+    @staticmethod
+    def calcular_or(x1, x2):
+        p_or =  Perceptron(2)
+        p_or.update(x=[x1, x2], w=[0.1,0.1], b=0.5)
+        return p_or.calculate()
+
 class TestPerceptron(unittest.TestCase):
    
     def test_calcular_entrada(self):
@@ -59,6 +67,14 @@ class TestPerceptron(unittest.TestCase):
         output = p.calculate()
 
         self.assertEqual(output, 0)
+
+    def test_or(self):
+        x1 = 0
+        x2 = 1
+
+        y = Compuertas.calcular_or(x1, x2)
+
+        self.assertEqual(y,1)
 
 
 
