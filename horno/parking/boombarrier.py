@@ -7,6 +7,8 @@ def validate_payment(plate, payment):
                     type(payment) is not int or 
                     (type(payment) is int and payment <=0)):
         return 'NO PAYMENT'
+    elif not plate:
+        raise (ValueError('UNDEFINED PLATE'))
 
 class BoomBarrierTest(unittest.TestCase):
 
