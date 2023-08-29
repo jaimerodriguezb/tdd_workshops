@@ -26,4 +26,12 @@ class BoomBarrierTest(unittest.TestCase):
 
         self.assertEqual(result, 'NO PAYMENT')
 
+    def test_carplate_undefined(self):
+        plate = None
+        payment = None
+
+        with self.assertRaises(ValueError):
+            validate_payment(plate, payment)
+        
+
 unittest.main(__name__)
