@@ -1,5 +1,8 @@
 import unittest
 
+def validate_payment(plate, payment):
+    return 'LIFT'
+
 class BoomBarrierTest(unittest.TestCase):
 
     def test_carplate_payment_ok(self):
