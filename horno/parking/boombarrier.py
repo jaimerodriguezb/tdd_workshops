@@ -1,7 +1,12 @@
 import unittest
 
 def validate_payment(plate, payment):
-    return 'LIFT'
+    if plate and payment:
+        return 'LIFT'
+    elif plate and (not payment or 
+                    type(payment) is not int or 
+                    (type(payment) is int and payment <=0)):
+        return 'NO PAYMENT'
 
 class BoomBarrierTest(unittest.TestCase):
 
