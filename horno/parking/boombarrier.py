@@ -2,9 +2,11 @@ import unittest
 from drivers import CamDriver, BoomBarrierDriver
 
 class ParkingSystem():
+    def __init__(self):
+        self.camm = CamDriver()
 
     def is_plate_paid(self, plate):
-        return 'OK'
+        return self.camm.check_car_plate(plate)
 
 
 def validate_payment(plate, payment):
