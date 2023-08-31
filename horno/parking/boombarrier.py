@@ -60,4 +60,26 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
 
         self.assertEqual(result, 'OK')
 
+    @patch.object(CamDriver, "check_car_plate", return_value='PENDING')
+    def test_unpaid(self, mock_check_car_plate):
+        plate = 'abc123'
+        system = ParkingSystem()
+        system.camm_driver.check_car_plate = mock_check_car_plate
+
+        result = system.is_plate_paid(plate)
+
+        self.assertEqual(result, 'PENDING')
+
+    @patch.object(CamDriver, "check_car_plate", 
+                  side_effect=ValueError("Payment status Undefined"))
+    def test_undefined(self, mock_check_car_plate):
+        plate = None
+        system = ParkingSystem()
+        system.camm_driver.check_car_plate = mock_check_car_plate
+
+        with self.assertRaises(ValueError) as error:
+            system.is_plate_paid(plate)
+
+        self.assertEqual(error.exception.args[0], "Payment status Undefined")
+
 unittest.main(__name__)
