@@ -5,10 +5,20 @@ from drivers import CamDriver, BoomBarrierDriver
 class ParkingSystem():
     def __init__(self):
         self.camm_driver = CamDriver()
+        self.boombarrier = BoomBarrierDriver()
 
     def is_plate_paid(self, plate):
         return self.camm_driver.check_car_plate(plate)
-
+    
+    def validate_plate(self, plate):
+        try:
+            payment = self.is_plate_paid(plate)
+            if payment == 'OK':
+                self.boombarrier.lift()
+            elif payment == 'PENDING':
+                self.boombarrier.lower()
+        except ValueError:
+            print("Plate undefined")
 
 def validate_payment(plate, payment):
     if plate and payment:
@@ -83,14 +93,26 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
         self.assertEqual(error.exception.args[0], "Payment status Undefined")
 
 
+    @patch("builtins.print")
     @patch.object(CamDriver, "check_car_plate", return_value='OK')
-    def test_lift(self, mock_check_car_plate):
+    def test_lift(self, mock_check_car_plate, mock_print):
         plate = 'abc123'
         system = ParkingSystem()
         system.camm_driver.check_car_plate = mock_check_car_plate
 
-        result = system.validate_plate(plate)
+        system.validate_plate(plate)
 
-        self.assertEqual(result, 'Lifting barrier')
+        mock_print.assert_called_with("Lifting barrier")
+
+    @patch("builtins.print")
+    @patch.object(CamDriver, "check_car_plate", return_value='PENDING')
+    def test_lower(self, mock_check_car_plate, mock_print):
+        plate = 'abc123'
+        system = ParkingSystem()
+        system.camm_driver.check_car_plate = mock_check_car_plate
+
+        system.validate_plate(plate)
+
+        mock_print.assert_called_with("Lowering barrier")
 
 unittest.main(__name__)
