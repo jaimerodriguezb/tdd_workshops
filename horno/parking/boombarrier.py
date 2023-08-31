@@ -1,4 +1,5 @@
 import unittest
+from drivers import CamDriver, BoomBarrierDriver
 
 def validate_payment(plate, payment):
     if plate and payment:
@@ -9,6 +10,8 @@ def validate_payment(plate, payment):
         return 'NO PAYMENT'
     elif not plate:
         raise (ValueError('UNDEFINED PLATE'))
+
+# Design using plain functional description
 
 class BoomBarrierTest(unittest.TestCase):
 
@@ -35,5 +38,15 @@ class BoomBarrierTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_payment(plate, payment)
         
+# Design using the drivers
+class BoomBarrierUsingDriverTest(unittest.TestCase):
+
+    def test_paid(self, mock_driver):
+        plate = 'abc123'
+        system = ParkingSystem()
+
+        result = system.is_plate_paid(plate)
+
+        self.assertEqual(result, 'OK')
 
 unittest.main(__name__)
