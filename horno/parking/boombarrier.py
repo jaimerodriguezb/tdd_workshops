@@ -18,7 +18,7 @@ class ParkingSystem():
             elif payment == 'PENDING':
                 self.boombarrier.lower()
         except ValueError:
-            print("Plate undefined")
+            print("Please make sure you paid")
 
 def validate_payment(plate, payment):
     if plate and payment:
@@ -114,5 +114,17 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
         system.validate_plate(plate)
 
         mock_print.assert_called_with("Lowering barrier")
+
+    @patch("builtins.print")
+    @patch.object(CamDriver, "check_car_plate", 
+                  side_effect=ValueError("Payment status Undefined"))
+    def test_user_error_message(self, mock_check_car_plate, mock_print):
+        plate = None
+        system = ParkingSystem()
+        system.camm_driver.check_car_plate = mock_check_car_plate
+
+        system.validate_plate(plate)
+
+        mock_print.assert_called_with("Please make sure you paid")
 
 unittest.main(__name__)
