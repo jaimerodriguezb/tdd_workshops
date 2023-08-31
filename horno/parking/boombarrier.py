@@ -1,6 +1,12 @@
 import unittest
 from drivers import CamDriver, BoomBarrierDriver
 
+class ParkingSystem():
+
+    def is_plate_paid(self, plate):
+        return 'OK'
+
+
 def validate_payment(plate, payment):
     if plate and payment:
         return 'LIFT'
@@ -41,7 +47,7 @@ class BoomBarrierTest(unittest.TestCase):
 # Design using the drivers
 class BoomBarrierUsingDriverTest(unittest.TestCase):
 
-    def test_paid(self, mock_driver):
+    def test_paid(self):
         plate = 'abc123'
         system = ParkingSystem()
 
