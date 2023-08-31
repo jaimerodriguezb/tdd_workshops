@@ -1,12 +1,13 @@
 import unittest
+from unittest.mock import patch, MagicMock
 from drivers import CamDriver, BoomBarrierDriver
 
 class ParkingSystem():
     def __init__(self):
-        self.camm = CamDriver()
+        self.camm_driver = CamDriver()
 
     def is_plate_paid(self, plate):
-        return self.camm.check_car_plate(plate)
+        return self.camm_driver.check_car_plate(plate)
 
 
 def validate_payment(plate, payment):
@@ -49,9 +50,11 @@ class BoomBarrierTest(unittest.TestCase):
 # Design using the drivers
 class BoomBarrierUsingDriverTest(unittest.TestCase):
 
-    def test_paid(self):
+    @patch.object(CamDriver, "check_car_plate", return_value='OK')
+    def test_paid(self, mock_check_car_plate):
         plate = 'abc123'
         system = ParkingSystem()
+        system.camm_driver.check_car_plate = mock_check_car_plate
 
         result = system.is_plate_paid(plate)
 
