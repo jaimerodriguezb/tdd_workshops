@@ -13,9 +13,9 @@ class ParkingSystem():
     def validate_plate(self, plate):
         try:
             payment = self.is_plate_paid(plate)
-            if payment == 'OK':
+            if payment == True:
                 self.boombarrier.lift()
-            elif payment == 'PENDING':
+            elif payment == False:
                 self.boombarrier.lower()
         except ValueError:
             print("Please make sure you paid")
@@ -60,7 +60,7 @@ class BoomBarrierTest(unittest.TestCase):
 # Design using the drivers
 class BoomBarrierUsingDriverTest(unittest.TestCase):
 
-    @patch.object(CamDriver, "check_car_plate", return_value='OK')
+    @patch.object(CamDriver, "check_car_plate", return_value=True)
     def test_paid(self, mock_check_car_plate):
         plate = 'abc123'
         system = ParkingSystem()
@@ -68,9 +68,9 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
 
         result = system.is_plate_paid(plate)
 
-        self.assertEqual(result, 'OK')
+        self.assertEqual(result, True)
 
-    @patch.object(CamDriver, "check_car_plate", return_value='PENDING')
+    @patch.object(CamDriver, "check_car_plate", return_value=False)
     def test_unpaid(self, mock_check_car_plate):
         plate = 'abc123'
         system = ParkingSystem()
@@ -78,7 +78,7 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
 
         result = system.is_plate_paid(plate)
 
-        self.assertEqual(result, 'PENDING')
+        self.assertEqual(result, False)
 
     @patch.object(CamDriver, "check_car_plate", 
                   side_effect=ValueError("Payment status Undefined"))
@@ -94,7 +94,7 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
 
 
     @patch("builtins.print")
-    @patch.object(CamDriver, "check_car_plate", return_value='OK')
+    @patch.object(CamDriver, "check_car_plate", return_value=True)
     def test_lift(self, mock_check_car_plate, mock_print):
         plate = 'abc123'
         system = ParkingSystem()
@@ -105,7 +105,7 @@ class BoomBarrierUsingDriverTest(unittest.TestCase):
         mock_print.assert_called_with("Lifting barrier")
 
     @patch("builtins.print")
-    @patch.object(CamDriver, "check_car_plate", return_value='PENDING')
+    @patch.object(CamDriver, "check_car_plate", return_value=False)
     def test_lower(self, mock_check_car_plate, mock_print):
         plate = 'abc123'
         system = ParkingSystem()
